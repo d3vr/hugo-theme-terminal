@@ -58,11 +58,19 @@ body {
 
 a {
   color: inherit;
+  transition: color 0.1s;
+  position: relative;
 
   /* Waiting for a better times... */
   /* &:has(code) {
     text-decoration-color: $accent;
   } */
+}
+a:active {
+  top: 1px;
+}
+a:hover {
+  color: $accent;
 }
 
 img {
@@ -343,4 +351,9 @@ hr {
 
 sup {
  line-height: 0;
+}
+
+.separator {
+  display: inline-block;
+  margin: 0 10px;
 }
