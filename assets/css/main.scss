@@ -60,6 +60,7 @@ a {
   color: inherit;
   transition: color 0.1s;
   position: relative;
+  text-underline-offset: 2px;
 
   /* Waiting for a better times... */
   /* &:has(code) {
@@ -351,6 +352,12 @@ hr {
 
 sup {
  line-height: 0;
+}
+
+abbr {
+  text-decoration: underline dashed $accent;
+  text-underline-offset: 3px;
+  cursor: help;
 }
 
 .separator {

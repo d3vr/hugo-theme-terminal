@@ -51,7 +51,7 @@
           {{ else if .Description }}
             {{ .Description | markdownify }}
           {{ else }}
-            {{ .Summary | markdownify }}
+            {{ .Summary }}
           {{ end }}
         </div>
 
