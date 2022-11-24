@@ -8,11 +8,12 @@
     <div>
       Published :: 
       <time class="post-date">
-        {{ .Date.Format "2006-01-02" }} <span class="separator">/</span>
+        {{ .Date.Format "2006-01-02" }} 
       </time>
     </div>
     {{ end }}
     {{ if and ($.Site.Params.showLastUpdated) (eq (.Param "showLastUpdated") true) }}
+    <span class="separator">/</span>
     <div>
       {{or $.Site.Params.updatedDatePrefix "Updated"}} :: 
       <time class="post-date">
