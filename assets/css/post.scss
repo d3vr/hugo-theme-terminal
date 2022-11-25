@@ -82,14 +82,13 @@
   }
 
   &-cover {
-    border: 20px solid $accent;
+    border: 1px solid $accent;
     background: transparent;
     margin: 40px 0;
-    padding: 20px;
 
     @media ($phone) {
-      padding: 10px;
-      border-width: 10px;
+      height: 260px;
+      object-fit: cover;
     }
   }
 
