@@ -3,6 +3,9 @@
 <meta name="description" content="{{ if .IsHome }}{{ $.Site.Params.Subtitle }}{{ else if .Description}}{{ .Description | plainify }}{{ else }}{{ .Summary | plainify }}{{ end }}" />
 <meta name="keywords" content="{{ with .Params.Keywords }}{{ delimit . ", " }}{{ else }}{{ $.Site.Params.Keywords }}{{ end }}" />
 <link rel="canonical" href="{{ .Permalink }}" />
+{{ if not (.Params.hideComments | default false) }}
+<link rel="giscus:backlink" href="{{ .Permalink }}" />
+{{ end }}
 
 {{ template "_internal/google_analytics.html" . }}
 
