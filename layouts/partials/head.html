@@ -7,6 +7,12 @@
 <link rel="giscus:backlink" href="{{ .Permalink }}" />
 {{ end }}
 
+<link rel="prefetch" href="/fonts/FiraCode-Regular.woff" as="font" />
+<link rel="prefetch" href="/fonts/FiraCode-Bold.woff" as="font" />
+<link rel="preconnect" href="https://giscus.app" />
+<link rel="prefetch" href="https://giscus.app/client.js" as="script" />
+<link rel="prefetch" href="https://giscus.app/themes/transparent_dark.css" as="style" />
+
 {{ template "_internal/google_analytics.html" . }}
 
 {{ $defaultStyles := resources.Get "css/style.scss" }}
@@ -15,6 +21,7 @@
   {{ $localColorCss := resources.Get (printf "css/color/%s.scss" .Params.color) }}
   {{ $localCss := slice $localColorCss $defaultStyles | resources.Concat (printf "css/%s-local.scss" .Params.color) }}
   {{ $localColorStyles := $localCss | resources.ToCSS | fingerprint }}
+  <link rel="preload" href="{{ $localColorStyles.RelPermalink }}" as="style">
   <link rel="stylesheet" href="{{ $localColorStyles.RelPermalink }}">
 {{ else }}
   <!-- Theme Variables -->
@@ -22,11 +29,19 @@
   {{ $css := slice $colorCss $defaultStyles | resources.Concat "css/base.scss" }}
   {{ $options := (dict "targetPath" "style.css" "outputStyle" "compressed" "enableSourceMap" true "precision" 6 "includePaths" (slice "node_modules")) }}
   {{ $styles := $css | resources.ToCSS $options | fingerprint }}
+  <link rel="preload" href="{{ $styles.RelPermalink }}" as="style">
   <link rel="stylesheet" href="{{ $styles.RelPermalink }}">
 {{ end }}
 
+{{ $menu := resources.Get "js/menu.js" | js.Build }}
+{{ $prism := resources.Get "js/prism.js" | js.Build }}
+{{ $bundle := slice $menu $prism | resources.Concat "bundle.js" | resources.Minify }}
+{{ .Scratch.Set "jsbundle" $bundle.RelPermalink }}
+<link rel="preload" href="{{ $bundle.RelPermalink }}" as="script" />
+
 <!-- Custom CSS to override theme properties (/static/style.scss) -->
 {{ if (fileExists "static/style.scss") -}}
+  <link rel="preload" href="{{ "style.scss" | absURL }}" as="style">
   <link rel="stylesheet" href="{{ "style.scss" | absURL }}">
 {{- end }}
 
