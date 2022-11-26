@@ -114,6 +114,12 @@ pre[class*="language-"] {
 .line-numbers .line-highlight:after {
   content: none;
 }
+.line-numbers .line-numbers-rows, .command-line .command-line-prompt {
+  border-right-color: transparentize(#999, .8);
+}
+pre[class*=language-].line-numbers {
+  padding-left: 3.4em;
+}
 
 .code-toolbar {
   $code-margin: 40px;
