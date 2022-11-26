@@ -66,14 +66,23 @@
     }
   }
 
-  &-tags {
-    display: block;
-    margin-bottom: 20px;
+  &-taxonomies {
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
     font-size: 1rem;
     opacity: .5;
 
     a {
       text-decoration: none;
+    }
+  }
+  &-categories {
+    display: inline-flex;
+    align-items: center;
+
+    svg {
+      margin-right: 10px;
     }
   }
 
