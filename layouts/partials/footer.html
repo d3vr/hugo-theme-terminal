@@ -12,7 +12,10 @@
 </footer>
 
 
-<script type="text/javascript" src="{{ .Scratch.Get "jsbundle" }}"></script>
+<script type="text/javascript" src="{{ .Scratch.Get "js_menu" }}"></script>
+{{ if .Params.highlightCode }}
+<script type="text/javascript" src="{{ .Scratch.Get "js_prism" }}" defer></script>
+{{ end }}
 
 <!-- Extended footer section-->
 {{ partial "extended_footer.html" . }}

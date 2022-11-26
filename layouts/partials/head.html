@@ -7,6 +7,16 @@
 <link rel="giscus:backlink" href="{{ .Permalink }}" />
 {{ end }}
 
+
+{{- if (isset .Params "cover") -}}
+  {{- $pageCover := .Param "cover" -}}
+  {{- with (.Resources.GetMatch (.Param "cover")) -}}
+    {{- $pageCover = .RelPermalink -}}
+  {{- end -}}
+  <link fetchpriority="high" rel="preload" href="{{ $pageCover | absURL }}" as="image" />
+{{- end }}
+{{- if .Params.Cover -}}
+{{- end }}
 <link rel="prefetch" href="/fonts/FiraCode-Regular.woff" as="font" />
 <link rel="prefetch" href="/fonts/FiraCode-Bold.woff" as="font" />
 <link rel="preconnect" href="https://giscus.app" />
@@ -33,11 +43,14 @@
   <link rel="stylesheet" href="{{ $styles.RelPermalink }}">
 {{ end }}
 
-{{ $menu := resources.Get "js/menu.js" | js.Build }}
-{{ $prism := resources.Get "js/prism.js" | js.Build }}
-{{ $bundle := slice $menu $prism | resources.Concat "bundle.js" | resources.Minify }}
-{{ .Scratch.Set "jsbundle" $bundle.RelPermalink }}
-<link rel="preload" href="{{ $bundle.RelPermalink }}" as="script" />
+{{ $menu := resources.Get "js/menu.js" | js.Build | resources.Minify | fingerprint }}
+{{ .Scratch.Set "js_menu" $menu.RelPermalink }}
+<link rel="preload" href="{{ $menu.RelPermalink }}" as="script" />
+{{ if .Params.highlightCode }}
+{{ $prism := resources.Get "js/prism.js" | js.Build | resources.Minify | fingerprint }}
+{{ .Scratch.Set "js_prism" $prism.RelPermalink }}
+<link rel="prefetch" href="{{ $prism.RelPermalink }}" as="script" />
+{{ end }}
 
 <!-- Custom CSS to override theme properties (/static/style.scss) -->
 {{ if (fileExists "static/style.scss") -}}
