@@ -68,22 +68,23 @@
 
   &-taxonomies {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     margin: 20px 0;
     font-size: 1rem;
+    line-height: 1.9em;
     opacity: .5;
 
     a {
       text-decoration: none;
     }
   }
-  &-categories {
-    display: inline-flex;
-    align-items: center;
+  &-tag {
+    margin-right: 10px;
+  }
 
-    svg {
-      margin-right: 10px;
-    }
+  svg {
+    margin-right: 10px;
   }
 
   &-content {
@@ -97,6 +98,7 @@
 
     @media ($phone) {
       height: 260px;
+      width: 100%;
       object-fit: cover;
     }
   }
