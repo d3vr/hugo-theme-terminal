@@ -5,7 +5,12 @@
     </div>
   {{ end }}
   <div class="posts">
-    {{ range .Paginator.Pages }}
+    {{- $pages := cond 
+                 (and (isset .Params "paginate_content") ( not (eq .Params.paginate_content "context")))
+                 (.Paginate (where .Site.RegularPages "Type" .Params.paginate_content)) 
+                 .Paginator 
+    -}}
+    {{- range $pages.Pages -}}
       <article class="post on-list">
         <h1 class="post-title">
           <a href="{{ .Permalink }}">{{ .Title | markdownify }}</a>
