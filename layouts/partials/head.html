@@ -47,9 +47,9 @@
 {{ .Scratch.Set "js_menu" $menu.RelPermalink }}
 <link rel="preload" href="{{ $menu.RelPermalink }}" as="script" />
 {{ if .Params.highlightCode }}
-{{ $prism := resources.Get "js/prism.js" | js.Build | resources.Minify | fingerprint }}
-{{ .Scratch.Set "js_prism" $prism.RelPermalink }}
-<link rel="prefetch" href="{{ $prism.RelPermalink }}" as="script" />
+{{ $copy := resources.Get "js/copy.js" | js.Build | resources.Minify | fingerprint }}
+{{ .Scratch.Set "js_copy" $copy.RelPermalink }}
+<link rel="prefetch" href="{{ $copy.RelPermalink }}" as="script" />
 {{ end }}
 
 <!-- Custom CSS to override theme properties (/static/style.scss) -->
@@ -67,19 +67,21 @@
 {{ end }}
 
 <!-- Twitter Card -->
-<meta name="twitter:card" content="summary" />
+  
 {{ if (isset $.Site.Params "twitter") }}
   {{ if (isset $.Site.Params.Twitter "site") }}
     <meta name="twitter:site" content="{{ $.Site.Params.Twitter.site }}" />
   {{ end }}
-    <meta name="twitter:creator" content="{{ if .IsHome }}{{ $.Site.Params.Twitter.creator }}{{ else if isset .Params "authortwitter" }}{{ .Params.authorTwitter }}{{ else }}{{ .Params.Author }}{{ end }}" />
+    <meta name="twitter:creator" content="{{ if isset $.Site.Params.Twitter "creator" }}{{ $.Site.Params.Twitter.creator }}{{ end }}" />
 {{ end }}
 
 <!-- OG data -->
 <meta property="og:locale" content="{{ $.Site.Language.Lang }}" />
 <meta property="og:type" content="{{ if .IsPage }}article{{ else }}website{{ end }}" />
 <meta property="og:title" content="{{ if .IsHome }}{{ $.Site.Title }}{{ else }}{{ .Title }}{{ end }}">
+<meta property="twitter:title" content="{{ if .IsHome }}{{ $.Site.Title }}{{ else }}{{ .Title }}{{ end }}">
 <meta property="og:description" content="{{ if .IsHome }}{{ $.Site.Params.Subtitle }}{{ else if .Description}}{{ .Description | plainify }}{{ else }}{{ .Summary | plainify }}{{ end }}" />
+<meta property="twitter:description" content="{{ if .IsHome }}{{ $.Site.Params.Subtitle }}{{ else if .Description}}{{ .Description | plainify }}{{ else }}{{ .Summary | plainify }}{{ end }}" />
 <meta property="og:url" content="{{ .Permalink }}" />
 <meta property="og:site_name" content="{{ $.Site.Title }}" />
 {{ if (isset .Params "cover") }}
@@ -87,8 +89,11 @@
   {{ with (.Resources.GetMatch (.Param "cover")) }}
     {{ $pageCover = .RelPermalink }}
   {{ end }}
+  <meta name="twitter:card" content="summary_large_image" />
   <meta property="og:image" content="{{ $pageCover | absURL }}">
+  <meta property="twitter:image" content="{{ $pageCover | absURL }}">
 {{ else }}
+  <meta name="twitter:card" content="summary" />
   {{ if isset $.Site.Params "favicon" }}
     <meta property="og:image" content="{{ $.Site.Params.favicon | absURL }}">
   {{ else }}

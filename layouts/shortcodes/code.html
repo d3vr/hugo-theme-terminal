@@ -1,15 +1,14 @@
-{{ $id := delimit (shuffle (seq 1 9)) "" }}
-
-{{ if .Get "language" }}
-  <div class="collapsable-code">
-    <input id="{{ .Get "id" | default $id }}" type="checkbox" {{ if ( eq ( .Get "isCollapsed" ) "true" ) -}} checked {{- end }} />
-    <label for="{{ .Get "id" | default $id }}">
-      <span class="collapsable-code__language">{{ .Get "language" }}</span>
-      {{ if .Get "title" }}<span class="collapsable-code__title">{{ .Get "title" | markdownify }}</span>{{ end }}
-      <span class="collapsable-code__toggle" data-label-expand="{{ .Get "expand" | default "△" }}" data-label-collapse="{{ .Get "collapse" | default "▽" }}"></span>
-    </label>
-  <pre  class="{{ if .Get "terminal" }}command-line{{ end }} {{ if .Get "language" }}language-{{ .Get "language" }}{{ end }} {{ if .Get "numbers" }}line-numbers{{end}}" {{ if .Get "highlight" }}data-line="{{ .Get "highlight" }}"{{end}} {{ if .Get "terminal" }} data-prompt="{{ .Get "prompt" | default "$" }}" {{ if .Get "output" }} data-output="{{ .Get "output" }}" {{ end }}{{ end }}><code>{{ .Inner | string }}</code></pre>
-  </div>
-{{ else }}
-  {{ errorf "If you want to use the \"collapsable code\" shortcode, you need to pass a mandatory \"language\" param. The issue occured in %q (%q)" .Page.File .Page.Permalink }}
-{{ end }}
+{{- $id := delimit (shuffle (seq 1 9)) "" -}}
+<div class="collapsable-code">
+  <input id="{{ .Get "id" | default $id }}" type="checkbox" {{ if ( eq ( .Get "folded" ) "true" ) -}} checked {{- end }} />
+  <label for="{{ .Get "id" | default $id }}">
+    <span class="collapsable-code__language">{{ .Get "language" }}</span>
+    {{ if .Get "title" }}<span class="collapsable-code__title">{{ .Get "title" | markdownify }}</span>{{ end }}
+    <span class="collapsable-code__toggle" data-label-expand="{{ .Get "expand" | default "+" }}" data-label-collapse="{{ .Get "collapse" | default "—" }}"></span>
+  </label>
+  {{- if .Get "opts" -}}
+      {{- highlight (trim .Inner "\n\r") (.Get "language") (.Get "opts") -}}
+  {{- else -}}
+      {{- highlight (trim .Inner "\n\r") (.Get "language") "" -}}
+  {{- end -}}
+</div>
