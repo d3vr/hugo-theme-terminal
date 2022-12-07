@@ -1,0 +1,10 @@
+<br>
+<hr>
+<aside id="toc">
+  <h2>
+    {{ (.Page.Params.TocTitle | default .Site.Params.TocTitle) | default "Table of Contents" }}
+  </h2>
+  {{ .Page.TableOfContents }}
+</aside>
+<hr>
+<br>
