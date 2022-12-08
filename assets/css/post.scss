@@ -78,6 +78,9 @@
     a {
       text-decoration: none;
     }
+    svg {
+      margin-right: 5px;
+    }
   }
   &-tag {
     margin-right: 10px;
@@ -107,6 +110,12 @@
       position: absolute;
       left: -20px;
       color: $accent;
+    }
+    li {
+      margin-bottom: 10px;
+      pre {
+        margin: 25px 0;
+      }
     }
   }
 }
