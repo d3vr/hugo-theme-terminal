@@ -34,7 +34,7 @@
         </div>
 
         {{ partial "taxonomies.html" . }}
-        {{ partial "cover.html" . }}
+        {{ partial "cover.html" (dict "scope" "list" "page" .) }}
 
         <div class="post-content">
           {{ if .Params.showFullContent }}

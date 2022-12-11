@@ -365,3 +365,20 @@ abbr {
   display: inline-block;
   margin: 0 10px;
 }
+
+#newsletter input[type="email"] {
+  width: 350px;
+
+}
+
+@media ($phone) {
+  #newsletter {
+    display: flex;
+  }
+
+  #newsletter input[type="email"] {
+    width: auto;
+    flex: 1;
+    border-right: 0;
+  }
+}

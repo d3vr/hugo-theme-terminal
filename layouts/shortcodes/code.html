@@ -1,11 +1,13 @@
 {{- $id := delimit (shuffle (seq 1 9)) "" -}}
 <div class="collapsable-code">
+  {{ if not (isset .Params "noheader") }}
   <input id="{{ .Get "id" | default $id }}" type="checkbox" {{ if ( eq ( .Get "folded" ) "true" ) -}} checked {{- end }} />
   <label for="{{ .Get "id" | default $id }}">
     <span class="collapsable-code__language">{{ .Get "language" }}</span>
     {{ if .Get "title" }}<span class="collapsable-code__title">{{ .Get "title" | markdownify }}</span>{{ end }}
     <span class="collapsable-code__toggle" data-label-expand="{{ .Get "expand" | default "+" }}" data-label-collapse="{{ .Get "collapse" | default "—" }}"></span>
   </label>
+  {{ end }}
   {{- if .Get "opts" -}}
       {{- highlight (trim .Inner "\n\r") (.Get "language") (.Get "opts") -}}
   {{- else -}}

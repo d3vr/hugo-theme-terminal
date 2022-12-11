@@ -33,7 +33,7 @@
   </div>
 
   {{ partial "taxonomies.html" . }}
-  {{ partial "cover.html" . }}
+  {{ partial "cover.html" (dict "scope" "single" "page" .) }}
 
   <div class="post-content">
     {{- with .Content -}}

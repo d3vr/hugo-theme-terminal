@@ -37,10 +37,6 @@
 
     @media ($phone) {
       flex-wrap: wrap;
-
-      & .separator {
-        display: none;
-      }
     }
   }
 
@@ -90,6 +86,11 @@
     margin-top: 30px;
   }
 
+  &-image {
+    border: 1px solid $accent;
+    margin: 40px 0;
+  }
+
   &-cover {
     border: 1px solid $accent;
     background: transparent;
@@ -112,10 +113,24 @@
       color: $accent;
     }
     li {
-      margin-bottom: 10px;
+      margin-bottom: 7px;
       pre {
         margin: 25px 0;
       }
+    }
+  }
+  .dialogue {
+    pre {
+      margin: 0;
+    }
+    pre:not(.color) {
+      color: $color;
+    }
+    pre.color {
+      color: $accent;
+    }
+    .collapsable-code {
+      margin: 0;
     }
   }
 }
@@ -147,6 +162,22 @@ h1:hover a, h2:hover a, h3:hover a, h4:hover a {
   visibility: visible;
 }
 
+.footnote-ref {
+  color: $accent;
+}
 .footnotes {
   color: transparentize($color, .5);
+
+  &:before {
+    content: "Footnotes";
+    background: rgb(31, 34, 42);
+    position: relative;
+    bottom: -18px;
+    left: 10px;
+    padding: 0 10px;
+  }
+
+  hr {
+    margin-bottom: 25px;
+  }
 }
