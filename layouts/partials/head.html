@@ -7,7 +7,6 @@
 <link rel="giscus:backlink" href="{{ .Permalink }}" />
 {{ end }}
 
-
 {{- if (isset .Params "cover") -}}
   {{- $pageCover := .Param "cover" -}}
   {{- with (.Resources.GetMatch (.Param "cover")) -}}
@@ -117,6 +116,124 @@
 <!-- JSON Feed -->
 {{ with .OutputFormats.Get "json" }}
   <link href="{{ .RelPermalink }}" rel="alternate" type="application/json" title="{{ $.Site.Title }}" />
+{{ end }}
+
+{{ if .IsHome }}
+
+  {{ $isntDefault := not (or (eq (trim $.Site.Params.contentTypeName " ") "posts") (eq (trim $.Site.Params.contentTypeName " ") "")) }}
+  {{ $contentTypeName := cond $isntDefault (string $.Site.Params.contentTypeName) "posts" }}
+
+  {{ $PageContext := . }}
+  {{ if .IsHome }}
+    {{ $PageContext = .Site }}
+  {{ end }}
+  {{ $paginator := .Paginate (where $PageContext.RegularPages "Type" $contentTypeName) }}
+
+  <script type="application/ld+json">
+  {
+      "@context": "https://schema.org/",
+      "@type": "Blog",
+      "@id": {{ "/" | absURL }},
+      "mainEntityOfPage": {{ "/" | absURL }},
+      "name": {{ $.Site.Title }},
+      "description": {{ $.Site.Params.Subtitle }},
+      "publisher": {
+          "@type": "Person",
+          "@id": {{ "/about/" | absURL }},
+          "name": "Fayçal Mitidji"
+      },
+      "blogPost": [
+          {{- range $i, $bp := $paginator.Pages -}}
+          {{- if $i -}}, {{- end }}
+          {
+              "@type": "BlogPosting",
+              "@id": {{ $bp.Permalink }},
+              "mainEntityOfPage": {{ $bp.Permalink }},
+              "url": {{ $bp.Permalink }},
+              "headline": "{{ .Title | markdownify }}",
+              "name": "{{ .Title | markdownify }}",
+              "description": "{{ if .Description}}{{ .Description | plainify }}{{ else }}{{ .Summary | plainify }}{{ end }}",
+              "datePublished": {{ $bp.Date.Format "2006-01-02T15:04:05Z0700" }},
+              "dateModified": {{ $bp.Lastmod.Format "2006-01-02T15:04:05Z0700" }},
+              "author": {
+                "@type": "Person",
+                "@id": {{ "/about/" | absURL }},
+                "name": "Fayçal Mitidji"
+              },
+              "wordCount": "{{- $bp.WordCount -}}",
+              {{ if (isset $bp.Params "cover") }}
+              {{- $pageCover := $bp.Param "cover" -}}
+              {{- with (.Resources.GetMatch ($bp.Param "cover")) -}}
+                {{- $pageCover = $bp.RelPermalink -}}
+              {{- end -}}
+              "image": {
+                  "@type": "ImageObject",
+                  "@id": {{ $pageCover | absURL }},
+                  "url": {{ $pageCover | absURL }},
+                  "height": "385",
+                  "width": "784"
+              },
+              {{- end }}
+              {{- if $bp.Params.Keywords }}
+              "keywords": [
+                {{ range $j, $k := $bp.Params.Keywords -}}{{- if $j -}}, {{- end -}}{{- $k -}}{{- end }}
+              ]
+              {{- end }}
+          }
+          {{- end }}
+      ]
+  }
+  </script>
+{{ else if .IsPage }}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org/",
+    "@type": "BlogPosting",
+    "@id": {{ .Permalink }},
+    "mainEntityOfPage": {{ .Permalink }},
+    "url": {{ .Permalink }},
+    "headline": "{{ .Title | markdownify }}",
+    "name": "{{ .Title | markdownify }}",
+    "description": "{{ if .Description}}{{ .Description | plainify }}{{ else }}{{ .Summary | plainify }}{{ end }}",
+    "datePublished": {{ .Date.Format "2006-01-02T15:04:05Z0700" }},
+    "dateModified": {{ .Lastmod.Format "2006-01-02T15:04:05Z0700" }},
+    "author": {
+      "@type": "Person",
+      "@id": {{ "/about/" | absURL }},
+      "name": "Fayçal Mitidji"
+    },
+    "wordCount": "{{- .WordCount -}}",
+    {{ if (isset .Params "cover") }}
+    {{- $pageCover := .Param "cover" -}}
+    {{- with (.Resources.GetMatch (.Param "cover")) -}}
+      {{- $pageCover = .RelPermalink -}}
+    {{- end -}}
+    "image": {
+        "@type": "ImageObject",
+        "@id": {{ $pageCover | absURL }},
+        "url": {{ $pageCover | absURL }},
+        "height": "385",
+        "width": "784"
+    },
+    {{- end }}
+    {{- if .Params.Keywords }}
+    "keywords": [
+      {{ range $j, $k := .Params.Keywords -}}{{- if $j -}}, {{- end -}}{{- $k -}}{{- end }}
+    ],
+    {{- end }}
+    "isPartOf": {
+      "@type": "Blog",
+      "@id": {{ "/" | absURL }},
+      "name": {{ $.Site.Title }},
+      "description": {{ $.Site.Params.Subtitle }},
+      "publisher": {
+        "@type": "Person",
+        "@id": {{ "/about/" | absURL }},
+        "name": "Fayçal Mitidji"
+      }
+    }
+  }
+  </script>
 {{ end }}
 
 <!-- Extended head section-->
