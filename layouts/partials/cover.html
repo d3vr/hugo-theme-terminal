@@ -26,7 +26,7 @@
     alt="{{ .page.Params.CoverAlt }}"
     {{end}}
   {{ if .Params.CoverCredit }}title="{{ .Params.CoverCredit |plainify }}"{{end}} />
-{{ if eq .scope "single" }}
+{{ if eq .scope "list" }}
 </a>
 {{ end }}
 {{- end }}
