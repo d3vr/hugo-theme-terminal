@@ -39,10 +39,10 @@
         <div class="post-content">
           {{ if .Params.showFullContent }}
             {{ .Content }}
+          {{ else if .Summary }}
+            {{ .Summary }}
           {{ else if .Description }}
             {{ .Description | markdownify }}
-          {{ else }}
-            {{ .Summary }}
           {{ end }}
         </div>
 
